@@ -54,7 +54,9 @@ def send_message(token, recipient, text):
       }),
       headers={'Content-type': 'application/json'})
     if r.status_code != requests.codes.ok:
-      print("*************"+r.status_code+":"+reply+"**************")
+      print("*************"+int(r.status_code)+":"+reply+"**************")
+    else:
+      print("&&&&&&&& HUA NA &&&&&&&&&")
   except:
       print("############"+text+"#################")
 
