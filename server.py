@@ -44,16 +44,19 @@ def messaging_events(payload):
 def send_message(token, recipient, text):
   """Send the message text to recipient with id recipient.
   """
-
-  r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-    params={"access_token": token},
-    data=json.dumps({
-      "recipient": {"id": recipient},
-      "message": {"text": text.decode('unicode_escape')}
-    }),
-    headers={'Content-type': 'application/json'})
-  if r.status_code != requests.codes.ok:
-    print(r.text)
+  try:
+    reply = text.decode('unicode_escape')
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+      params={"access_token": token},
+      data=json.dumps({
+        "recipient": {"id": recipient},
+        "message": {"text": reply}
+      }),
+      headers={'Content-type': 'application/json'})
+    if r.status_code != requests.codes.ok:
+      print("*************"+reply+"**************")
+  except:
+      print("############"+text+"#################")
 
 if __name__ == '__main__':
   app.run()
