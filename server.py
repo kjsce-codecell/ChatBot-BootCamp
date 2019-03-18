@@ -12,7 +12,7 @@ PAT = 'EAAWwOpQhbEMBABzrLRs5jUztCHIwbHQnNDyVZAz5eQ0PqbxFpsZAC44e5p0y9MlnQVaCRKLU
 def handle_verification():
   print("Handling Verification.")
   if request.args.get('hub.verify_token', '') == 'my_voice_is_my_password_verify_me':
-    print("Verification successful!")
+    print("Verification successful!!!")
     return request.args.get('hub.challenge', '')
   else:
     print("Verification failed!")
