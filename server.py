@@ -1,64 +1,34 @@
-from flask import Flask, request
+from flask import Flask, request, make_response, jsonify
 import json
 import requests
 
 app = Flask(__name__)
-
-# This needs to be filled with the Page Access Token that will be provided
-# by the Facebook App that will be created.
-PAT = 'EAAWwOpQhbEMBABzrLRs5jUztCHIwbHQnNDyVZAz5eQ0PqbxFpsZAC44e5p0y9MlnQVaCRKLU7bjrRV2MYw9OxuwSL9ockaesYtPrxIk6T5xPf8cSoLj8JR19XnaxXuwSynOmd2w0ZCFLWxwx1X4jEwPywE3b73RZAJgmhZCGshTNMXZAE8tZBAs'
-
-@app.route('/', methods=['GET'])
-def handle_verification():
-  print("Handling Verification.")
-  if request.args.get('hub.verify_token', '') == 'my_voice_is_my_password_verify_me':
-    print("Verification successful!!!")
-    return request.args.get('hub.challenge', '')
-  else:
-    print("Verification failed!")
-    return 'Error, wrong validation token'
-
-@app.route('/', methods=['POST'])
-def handle_messages():
-  print("Handling Messages")
-  payload = request.get_data()
-  print(payload)
-  for sender, message in messaging_events(payload):
-    print("Incoming from %s: %s" % (sender, message))
-    send_message(PAT, sender, message)
-  return "ok"
-
-def messaging_events(payload):
-  """Generate tuples of (sender_id, message_text) from the
-  provided payload.
-  """
-  data = json.loads(payload)
-  messaging_events = data["entry"][0]["messaging"]
-  for event in messaging_events:
-    if "message" in event and "text" in event["message"]:
-      yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape')
-    else:
-      yield event["sender"]["id"], "I can't echo this"
-
-
-def send_message(token, recipient, text):
-  """Send the message text to recipient with id recipient.
-  """
+url = 'https://api.funtranslations.com/translate/'
+final_url = ''
+@app.route('/webhook', methods=['POST'])
+def webhook():
+  req = request.get_json(silent=True, force=True)
+  print(json.dumps(req, indent=4, sort_keys=True))
+  print(req['queryResult'])
   try:
-    reply = text.decode('unicode_escape')
-    r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-      params={"access_token": token},
-      data=json.dumps({
-        "recipient": {"id": recipient},
-        "message": {"text": reply}
-      }),
-      headers={'Content-type': 'application/json'})
-    if r.status_code != requests.codes.ok:
-      print("*************"+str(r.status_code)+":"+reply+"**************")
-    else:
-      print("&&&&&&&& HUA NA &&&&&&&&&")
-  except:
-      print("############"+text+"#################")
-
+    intent = req.get('queryResult').get('intent').get('displayName')
+  except AttributeError:
+    return 'json error'
+  print('Intent: ' + intent)
+  if intent == 'Translation Init':
+    fulfillment = req.get('queryResult').get('fulfillmentText')
+    global final_url
+    final_url = url +req.get('queryResult').get('parameters').get('Language')[0]+'.json'
+    print(final_url) 
+    return make_response(jsonify({'fulfillmentText': fulfillment,'followupEventInput': {'name': 'Translate','languageCode': 'en-US'}}))
+  elif intent == 'Translate':
+    query = req.get('queryResult').get('queryText')
+    print(query,'*****',final_url)
+    payload = {'text':query}
+    res = requests.post(final_url,params=payload)
+    text = res.json()["contents"]["translated"]
+    return make_response(jsonify({'fulfillmentText': text}))
+  else:
+    return make_response(jsonify({'fulfillmentText': 'Apna Time Aega'}))
 if __name__ == '__main__':
   app.run()
