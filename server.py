@@ -14,32 +14,36 @@ Functions of the imported modules =>
 
 app = Flask(__name__)
 url = 'https://api.funtranslations.com/translate/'
+
+
 @app.route('/webhook', methods=['POST'])
 def webhook():
-  req = request.get_json(silent=True, force=True)
-  print(req)
-  try:
-    intent = req.get('queryResult').get('intent').get('displayName')
-  except AttributeError:
-    return 'json error'
-  print('Intent: ' + intent)
-  if intent == 'Translation Init':
-    fulfillment = req.get('queryResult').get('fulfillmentText')
-    language = req.get('queryResult').get('parameters').get('Language')[0]
-    return make_response(jsonify({'fulfillmentText': fulfillment,'followupEventInput': {'name': 'Translate','parameters':{'language':language},'languageCode': 'en-US'}}))
-  elif intent == 'Translate':
-    query = req.get('queryResult').get('queryText')
-    language = req.get('queryResult').get('parameters').get('language')
-    payload = {'text':query}
-    final_url = url + language + '.json'
-    res = requests.post(final_url,params=payload)
-    if res.status_code == 200:
-      text = res.json()["contents"]["translated"]
-    else:
-      print(res.status_code)
-      text = "request overlimit"
-    return make_response(jsonify({'fulfillmentText': text}))
-  else:
-    return make_response(jsonify({'fulfillmentText': 'Apna Time Aega'}))
+	req = request.get_json(silent=True, force=True)
+	print(req)
+	query_result = req.get('queryResult')
+	try:
+		intent =    # extact intent name ( displayName ) attribute from query_result
+    except AttributeError:
+		return 'json error'
+	print('Intent: ' + intent)
+	if intent == 'Translation Init':
+		fulfillment = # extact text ( fulfillmentText ) attribute from query_result 
+		language = # extract language attribute from query_result
+		return make_response(jsonify({'fulfillmentText': fulfillment, 'followupEventInput': {'name': 'Translate', 'parameters': {'language': language}, 'languageCode': 'en-US'}}))
+	elif intent == 'Translate':
+		query = # extact quert text ( queryText ) attribute from query_result 
+		language = # extract language attribute passed as context from query_result
+		payload = {'text': query}
+		final_url = url + language + '.json'
+		res = # make a post request to final_url using given data ( payload )
+		if res.status_code == 200:
+			text = # extract result ( translated text ) from response object
+		else:
+			print(res.status_code)
+			text = "request overlimit"
+		return # return a response object in json with fulfillmentText as attribute mapped with retreived results from API
+	else:
+		return # return a response object in json with fulfillmentText as attribute 
+
 if __name__ == '__main__':
-  app.run()
+	app.run()
