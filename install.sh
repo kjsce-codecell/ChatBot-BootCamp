@@ -5,3 +5,4 @@ apt install git
 apt install snapd
 snap install ngrok
 snap install --classic heroku
+snap install --classic vscode
