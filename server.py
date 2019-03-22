@@ -2,6 +2,16 @@ from flask import Flask, request, make_response, jsonify
 import json
 import requests
 
+'''
+Functions of the imported modules =>
+1. Flask         - to initialise and use the flask app
+2. request       - to handle the requests sent to this flask server
+3. make_response - creates a response object for the flask server
+4. jsonify       - creates a json response object, with header set to json
+5. json          - JSON is a syntax for storing and exchanging data.
+6. requests      - to make requests ('GET','POST',...) from python files
+'''
+
 app = Flask(__name__)
 url = 'https://api.funtranslations.com/translate/'
 @app.route('/webhook', methods=['POST'])
