@@ -11,6 +11,7 @@
 
 ## List of Resources:
 * [Supplementary PPT for workshop](https://drive.google.com/file/d/1OoZhprc_lAmgMf6gLozJdKRYaFM0sl6k/view?usp=sharing)
+* [Official Dialogue Flow Tutorials](https://dialogflow.com/docs/tutorial-build-an-agent)
 * [Flask Messenger Echobot without DialogueFlow](https://tsaprailis.com/2016/06/02/How-to-build-and-deploy-a-Facebook-Messenger-bot-with-Python-and-Flask-a-tutorial/)
 * [Facebook App Review](https://developers.facebook.com/docs/apps/review/)
   > Note: In order to make your bot public and respond to all the people the above procedure is compulsory
