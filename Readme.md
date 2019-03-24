@@ -4,6 +4,7 @@
 * [Echo Server (flask example)](https://github.com/nurdtechie98/mr.robot/tree/echo)
 * [Number API Chatbot](https://github.com/nurdtechie98/mr.robot/tree/numbers_api)
 * [Fun Translation API](https://github.com/nurdtechie98/mr.robot/tree/fun_translation)
+* [Sentiment Analysis](https://github.com/nurdtechie98/ChatBot-BootCamp/tree/sentiment_analysis)
 * [Codecell Chatbot](https://github.com/korusuke/Chatbot-Codecell)
   > Checkout welcome() function in app/respond.py for format of quick-replies and images.
 
