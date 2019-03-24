@@ -1,8 +1,8 @@
 # Chatbot BootCamp
 Code examples for multiple APIS can be found in the branches:
-1) Echo Server (flask example)
-2) Number API Chatbot 
-3) Fun Translation API
+1) [Echo Server (flask example)](https://github.com/nurdtechie98/mr.robot/tree/echo)
+2) [Number API Chatbot](https://github.com/nurdtechie98/mr.robot/tree/numbers_api)
+3) [Fun Translation API](https://github.com/nurdtechie98/mr.robot/tree/fun_translation)
 
 List of Resources:
 
